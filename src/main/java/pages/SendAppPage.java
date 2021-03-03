@@ -67,16 +67,11 @@ public class SendAppPage extends BasePage {
     public void fillField(String fieldName, String value) {
         switch (fieldName) {
             case "Фамилия":
-                surname.click();
                 fillField(surname, value);
-                new WebDriverWait(BaseSteps.getDriver(), 5, 1000).
-                        until(ExpectedConditions.visibilityOf(lastName)).click();
                 fillField(lastName, value);
                 break;
             case "Имя":
                 fillField(name, value);
-                new WebDriverWait(BaseSteps.getDriver(), 5, 1000).
-                        until(ExpectedConditions.visibilityOf(firstName)).click();
                 fillField(firstName, value);
                 break;
             case "Отчество":
@@ -84,8 +79,6 @@ public class SendAppPage extends BasePage {
                 break;
             case "Дата рождения":
                 fillField(birthDate, value);
-                new WebDriverWait(BaseSteps.getDriver(), 5, 1000).
-                        until(ExpectedConditions.visibilityOf(personBirthDate));
                 fillField(personBirthDate, value);
                 break;
             case "Серия":

@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
-public class SendAppSteps extends BaseSteps {
+public class SendAppSteps {
 
     @Step("Сумма страховой защиты - {0} ")
     public void chooseInsuranceSum(String insuranceSum) {
@@ -20,24 +20,24 @@ public class SendAppSteps extends BaseSteps {
     }
 
     @Step("Поле {0} заполняется значением {1}")
-    private void fillFieldStep(String field, String value) {
+    public void fillFieldStep(String field, String value) {
         new SendAppPage().fillField(field, value);
     }
 
     @Step("Заполнение полей ->")
-    public void fillFieldsStep(HashMap<String, String> fields) {
+    private void fillFieldsStep(HashMap<String, String> fields) {
         fields.forEach(this::fillFieldStep);
     }
 
     @Step("Поле {0} заполнено значением {1}")
-    private void checkFillField(String field, String value) {
+    public void checkFillField(String field, String value) {
         String actualValue = new SendAppPage().getFillField(field, value);
         assertEquals(String.format("Значение поля [%s] равно [%s]. Ожидалось - [%s]",
                 field, actualValue, value), actualValue, value);
     }
 
     @Step("Поля заполнены верно")
-    public void checkFillFields(HashMap<String, String> fields) {
+    private void checkFillFields(HashMap<String, String> fields) {
         fields.forEach(this::checkFillField);
     }
 

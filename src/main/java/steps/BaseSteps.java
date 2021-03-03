@@ -1,7 +1,7 @@
 package steps;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -23,7 +23,7 @@ public class BaseSteps {
         return driver;
     }
 
-    @BeforeClass
+    @Before
     public static void setUp() {
         if ("firefox".equals(properties.getProperty("browser"))) {
             System.setProperty("webdriver.gecko.driver", properties.getProperty("webdriver.gecko.driver"));
@@ -37,9 +37,10 @@ public class BaseSteps {
         System.out.println(baseUrl);
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        driver.get(baseUrl);
     }
 
-    @AfterClass
+    @After
     public static void tearDown() {
         driver.quit();
     }

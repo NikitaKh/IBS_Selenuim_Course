@@ -5,7 +5,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import static org.junit.Assert.assertTrue;
 
-public class InsuranceSteps extends BaseSteps {
+public class InsuranceSteps {
 
     @Step("Заголовок страницы 'Страхование для путешественников' равен - {0}")
     public void insurancePageTitle(String expectedTitle) {
