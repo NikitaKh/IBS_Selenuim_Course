@@ -15,7 +15,7 @@ public class ElektronikaCatalogPage extends BasePage {
     public void selectProductType(String productItem) {
         new WebDriverWait(BaseSteps.getDriver(), 5).
                 until(ExpectedConditions.visibilityOf(
-                        BaseSteps.getDriver().findElement(By.xpath("//A[text()='" +
-                                productItem + "']")))).click();
+                        BaseSteps.getDriver().findElement(By.xpath("//a[contains(text(),'" +
+                                productItem + "')]")))).click();
     }
 }

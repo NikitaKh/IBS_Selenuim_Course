@@ -17,14 +17,11 @@ public class TvCatalogPage extends BasePage {
     @FindBy(xpath = "//div[contains(@data-filter-id, 'glprice')]")
     WebElement productPrice;
 
+    @FindBy(xpath = "(//INPUT[@class='_34OG20yGDA'])[1]")
+    WebElement expandProducers;
+
     @FindBy(xpath = "//div//a[contains(text(), 'Показать')]")
     public WebElement acceptBtn;
-
-    @FindBy(xpath = "//BUTTON")
-    WebElement sizeButton;
-
-    @FindBy(xpath = "//div")
-    WebElement sizeControl;
 
     @FindBy(xpath = "//INPUT[@id='header-search']")
     WebElement searchField;
@@ -46,6 +43,7 @@ public class TvCatalogPage extends BasePage {
     public void selectProductProducer(String producer) {
         ((JavascriptExecutor) BaseSteps.getDriver()).executeScript("return arguments[0].scrollIntoView(true);",
                 BaseSteps.getDriver().findElement(By.xpath("//DIV[text()='" + producer + "']")));
+        fillField(expandProducers, producer);
         new WebDriverWait(BaseSteps.getDriver(), 5).
                 until(ExpectedConditions.visibilityOf(
                         BaseSteps.getDriver().findElement(
@@ -53,16 +51,11 @@ public class TvCatalogPage extends BasePage {
     }
 
     public void checkItemsSum(String itemsSum) {
-
-        if (!sizeButton.findElement(By.xpath("//span[contains(text(), 'Показывать по')]")).
-                getText().contains(itemsSum)) {
-            BaseSteps.getDriver().findElement(By.xpath("//button[@aria-expanded='false']")).click();
-            sizeControl.findElement(By.xpath("//button[contains(text(),'Показывать по " + itemsSum + "')]")).click();
+        int recordsCount = BaseSteps.getDriver().findElements(By.xpath("(//DIV[@class='_1OAvzJPfIW'])[*]")).size();
+        if (recordsCount < 12) {
+            org.junit.Assert.assertTrue(String.format("Получено значение [%s]. Ожидалось [%s]", recordsCount, itemsSum),
+                    String.valueOf(recordsCount).contains(itemsSum));
         }
-        String actualValue = sizeButton.findElement(By.xpath("//span[contains(text(), 'Показывать по')]")).
-                getText();
-        org.junit.Assert.assertTrue(String.format("Получено значение [%s]. Ожидалось [%s]", actualValue, "Показывать по " + itemsSum),
-                actualValue.contains("Показывать по " + itemsSum));
     }
 
     public String setItemInfo(String itemNum) {
@@ -77,7 +70,7 @@ public class TvCatalogPage extends BasePage {
 
     public String setSearchItemInfo() {
         return BaseSteps.getDriver().findElement(
-                By.xpath("(//DIV[@class='_1OAvzJPfIW'])[1]")).getText();
+                By.xpath("(//DIV[@class='_1OAvzJPfIW'])[1]//h3//span")).getText();
     }
 
 }
