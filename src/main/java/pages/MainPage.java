@@ -8,24 +8,15 @@ import steps.BaseSteps;
 
 public class MainPage extends BasePage {
 
-    @FindBy(xpath = "//ul[contains(@class,'kitt-top-menu')]")
-    WebElement mainMenu;
-
-    @FindBy(xpath = "//DIV[contains(@class,' kitt-top-menu__column kitt-top-menu__column_3  ')]")
-    WebElement subMenu;
-
-    @FindBy(xpath = "//BUTTON[@class='kitt-cookie-warning__close'][text()='Закрыть']")
-    public WebElement cookie;
+    @FindBy(xpath = "//DIV[@class='col main widgets']")
+    WebElement mainWidgets;
 
     public MainPage() {
         PageFactory.initElements(BaseSteps.getDriver(), this);
     }
 
-    public void selectMainMenu(String menuItem) {
-        mainMenu.findElement(By.xpath("//li/*[text()='" + menuItem + "']")).click();
-    }
-
-    public void selectSubMenu(String menuItem) {
-        subMenu.findElement(By.xpath("//ul/li/*[text()='" + menuItem + "']")).click();
+    public void selectMenuItem(String menuItem) {
+        mainWidgets.findElement(
+                By.xpath("//DIV[@class='services-new__item-title'][text()='" + menuItem + "']")).click();
     }
 }

@@ -1,72 +1,69 @@
 package steps;
 
 import cucumber.api.DataTable;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ScenarioSteps {
 
     MainSteps mainSteps = new MainSteps();
-    CatalogSteps catalogSteps = new CatalogSteps();
-    InsuranceSteps insuranceSteps = new InsuranceSteps();
-    SendAppSteps sendAppSteps = new SendAppSteps();
+    MarketSteps marketSteps = new MarketSteps();
+    ElectronikaCatalogSteps electronikaCatalogSteps = new ElectronikaCatalogSteps();
+    TvCatalogSteps tvCatalogSteps = new TvCatalogSteps();
 
-
-    @When("^Закрытие cookie уведомления$")
-    public void closeCookieWarning() {
-        mainSteps.closeCookieWarning();
+    @When("^выбран пункт меню \"(.*)\"$")
+    public void selectMainMenu(String menuItem) {
+        mainSteps.selectMenuWidget(menuItem);
     }
 
-    @When("^выбран пункт основного меню \"(.*)\"$")
-    public void stepSelectMainMenu(String menuItem) {
-        mainSteps.selectMainMenuItem(menuItem);
+    @When("^выбран раздел каталога \"(.*)\"$")
+    public void selectMarketCatalog(String marketItem) {
+        marketSteps.selectMarketSection(marketItem);
     }
 
-    @When("^выбран пункт вспомогательного меню\"(.*)\"$")
-    public void stepSelectSubMenu(String menuItem) {
-        mainSteps.selectSubMenuItem(menuItem);
+    @Then("^выбран вид товара - \"(.*)\"$")
+    public void selectProductSection(String productSection) {
+        electronikaCatalogSteps.selectElectronikaSection(productSection);
     }
 
-    @Then("^выбран вид странования \"(.*)\"$")
-    public void selectCatalogItem(String catalogItem) {
-        catalogSteps.selectCatalogItem(catalogItem);
+    @Then("^выполнен переход во 'Все фильтры'$")
+    public void wideSearch() {
+        tvCatalogSteps.wideSearch();
     }
 
-    @Then("^заголовок сраницы 'Страхование путешественников' равен - \"(.*)\"$")
-    public void pageHeaderCheck(String pageHeader) {
-        insuranceSteps.insurancePageTitle(pageHeader);
+    @When("^задать параметры поиска по цене \"(.*)\" \"(.*)\"$")
+    public void pricesRange(String range, String value) {
+        tvCatalogSteps.pricesRange(range, value);
     }
 
-    @Then("^выполнить нажатие 'Оформить онлайн'$")
-    public void clickInsuranceBtn() {
-        insuranceSteps.clickInsurancePageBtn();
+    @When("^выбрать производителей:$")
+    public void selectProducers(DataTable producers) {
+        producers.asList(String.class).forEach(producer -> tvCatalogSteps.selectProducer(producer));
     }
 
-    @When("^выбрана сумма страховой защиты - \"(.*)\"$")
-    public void insuranceSum(String insuranceSum) {
-        sendAppSteps.chooseInsuranceSum(insuranceSum);
+    @Then("^нажать кнопку 'Применить'$")
+    public void clickAcceptBtn() {
+        tvCatalogSteps.clickAcceptBtn();
     }
 
-    @Then("^выполнено нажате на кнопку - \"(.*)\"$")
-    public void pressBtn(String btnName) {
-        sendAppSteps.pressTheBtn(btnName);
+    @Then("^количество элементов на странице равно - \"(.*)\"$")
+    public void checkItemsSum(String items) {
+        tvCatalogSteps.checkItemsSum(items);
     }
 
-    @When("^заполняются поля:$")
-    public void fieldFilling(DataTable fields) {
-        fields.asMap(String.class, String.class).forEach(
-                (key, value) -> sendAppSteps.fillFieldStep(key, value));
+    @When("^записана информация о \"(.*)\" элементе$")
+    public void saveItemsInfo(String itemNum) {
+        tvCatalogSteps.saveItemInfo(itemNum);
     }
 
-    @Then("^значения полей равны:$")
-    public void checkFillForm(DataTable fields) {
-        fields.asMap(String.class, String.class).forEach(
-                (key, value) -> sendAppSteps.checkFillField(key, value));
+    @Then("^в поисковую строку введено записанное значение и нажата кнопка 'Найти'$")
+    public void searchItem() {
+        tvCatalogSteps.searchItem(tvCatalogSteps.itemInfo);
     }
 
-    @Then("^на странице присутствует сообщение об ошибке - \"(.*)\"$")
-    public void checkErrorMessage(String errorValue) {
-        sendAppSteps.errorFieldCheck(errorValue);
+    @Then("^наименование товара соответствует запомненному значению$")
+    public void matchItems() {
+        tvCatalogSteps.matchItems();
     }
+
 }
