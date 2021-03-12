@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -9,15 +10,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import steps.BaseSteps;
 
-public class TvCatalogPage extends BasePage {
+public class ItemCatalogPage extends BasePage {
 
     @FindBy(xpath = "//SPAN[@class='_1qOETCp-Ym'][text()='Все фильтры']")
-    public WebElement wideSearch;
+    WebElement wideSearch;
 
     @FindBy(xpath = "//div[contains(@data-filter-id, 'glprice')]")
     WebElement productPrice;
 
-    @FindBy(xpath = "(//INPUT[@class='_34OG20yGDA'])[1]")
+    @FindBy(xpath = "//section/div[2]/div/div/div[2]/div[1]/div[5]/div/div/div/button")
     WebElement expandProducers;
 
     @FindBy(xpath = "//div//a[contains(text(), 'Показать')]")
@@ -29,8 +30,20 @@ public class TvCatalogPage extends BasePage {
     @FindBy(xpath = "//BUTTON[@type='submit']")
     WebElement searchBtn;
 
-    public TvCatalogPage() {
+    public ItemCatalogPage() {
         PageFactory.initElements(BaseSteps.getDriver(), this);
+    }
+
+    public void selectWideSearch(String selectedItem) {
+        try {
+            wideSearch.click();
+        } catch (NoSuchElementException e) {
+            ((JavascriptExecutor) BaseSteps.getDriver()).executeScript("arguments[0].click()",
+                    BaseSteps.getDriver().findElement(
+                            By.xpath("//div[2]/div/div/div/div[*]/div/div/div/div" +
+                                    "/div/div/div[*]/div/a[contains(text(),'" + selectedItem + "')]")));
+            wideSearch.click();
+        }
     }
 
     public void selectPrice(String range, String value) {
@@ -38,16 +51,18 @@ public class TvCatalogPage extends BasePage {
                 productPrice.findElement(By.xpath("//div[contains(@data-prefix, '" + range + "')]//input")),
                 value
         );
+        ((JavascriptExecutor) BaseSteps.getDriver()).executeScript("return arguments[0].scrollIntoView(true);",
+                expandProducers);
+        expandProducers.click();
     }
 
     public void selectProductProducer(String producer) {
         ((JavascriptExecutor) BaseSteps.getDriver()).executeScript("return arguments[0].scrollIntoView(true);",
                 BaseSteps.getDriver().findElement(By.xpath("//DIV[text()='" + producer + "']")));
-        fillField(expandProducers, producer);
         new WebDriverWait(BaseSteps.getDriver(), 5).
                 until(ExpectedConditions.visibilityOf(
                         BaseSteps.getDriver().findElement(
-                                By.xpath("//DIV[text()='" + producer + "']")))).click();
+                                By.xpath("//div[text()='" + producer + "']")))).click();
     }
 
     public void checkItemsSum(String itemsSum) {
@@ -60,7 +75,7 @@ public class TvCatalogPage extends BasePage {
 
     public String setItemInfo(String itemNum) {
         return BaseSteps.getDriver().findElement(
-                By.xpath("(//SPAN[@class=''])[" + itemNum + "]")).getText();
+                By.xpath("//article[" + itemNum + "]//h3[@data-zone-name='title']//span")).getText();
     }
 
     public void searchItem(String itemInfo) {
@@ -70,7 +85,7 @@ public class TvCatalogPage extends BasePage {
 
     public String setSearchItemInfo() {
         return BaseSteps.getDriver().findElement(
-                By.xpath("(//DIV[@class='_1OAvzJPfIW'])[1]//h3//span")).getText();
+                By.xpath("//article[1]//h3[@data-zone-name='title']//a")).getText();
     }
 
 }

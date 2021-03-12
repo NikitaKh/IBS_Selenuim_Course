@@ -8,7 +8,7 @@ import steps.BaseSteps;
 
 public class MainPage extends BasePage {
 
-    @FindBy(xpath = "//DIV[@class='col main widgets']")
+    @FindBy(xpath = "//div//nav//ul//li")
     WebElement mainWidgets;
 
     public MainPage() {
@@ -17,6 +17,6 @@ public class MainPage extends BasePage {
 
     public void selectMenuItem(String menuItem) {
         mainWidgets.findElement(
-                By.xpath("//DIV[@class='services-new__item-title'][text()='" + menuItem + "']")).click();
+                By.xpath("//div[contains(text(),'" + menuItem + "')]")).click();
     }
 }

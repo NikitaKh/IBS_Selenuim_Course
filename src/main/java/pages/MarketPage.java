@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class MarketPage extends BasePage {
 
-    @FindBy(xpath = "//div[@data-zone-name='menu']//div[@data-zone-name='category-link']")
-    WebElement marketItem;
+    @FindBy(xpath = "//DIV[@data-zone-name='category-link']")
+    WebElement tabList;
 
     public MarketPage() {
         PageFactory.initElements(BaseSteps.getDriver(), this);
@@ -20,6 +20,6 @@ public class MarketPage extends BasePage {
     public void selectMarketItem(String catalogItem) {
         ArrayList<String> tabs = new ArrayList<>(BaseSteps.getDriver().getWindowHandles());
         BaseSteps.getDriver().switchTo().window(tabs.get(1));
-        marketItem.findElement(By.xpath("//div//a//span[contains(text(),'" + catalogItem + "')]")).click();
+        tabList.findElement(By.xpath("//div//span[contains(text(),'" + catalogItem + "')]")).click();
     }
 }
